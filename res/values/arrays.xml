@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources> 
+    <string-array name="GateNum">
+        <item>1번</item>
+        <item>2번</item>
+        <item>3번</item>
+        <item>4번</item>
+        <item>5번</item>
+        <item>6번</item>
+        <item>7번</item>
+        <item>8번</item>
+        <item>9번</item>
+        <item>10번</item>
+        <item>11번</item>
+        <item>12번</item>
+        <item>13번</item>
+        <item>14번</item>
+    </string-array>
+</resources>

@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <AutoCompleteTextView
+        android:id="@+id/txt_stn"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:hint="역이름"
+        android:layout_marginLeft="19dp"
+        android:layout_marginTop="18dp" />
+
+    <Spinner
+        android:id="@+id/spn_gateNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/txt_stn"
+        android:layout_marginLeft="22dp"
+        android:layout_toRightOf="@+id/txt_stn" />
+
+    <AutoCompleteTextView
+        android:id="@+id/txt_place"
+        android:layout_width="200dp"
+        android:layout_height="fill_parent"
+        android:layout_alignBottom="@+id/btn_search"
+        android:layout_alignLeft="@+id/txt_stn"
+        android:layout_alignTop="@+id/btn_search" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/spn_gateNum"
+        android:layout_toRightOf="@+id/txt_place"
+        android:text="Add" />
+
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btn_add"
+        android:layout_below="@+id/btn_add"
+        android:text="Search" />
+
+    <ScrollView
+	    android:layout_width="fill_parent" 
+	    android:layout_height="fill_parent"
+	    android:layout_alignLeft="@+id/txt_place"
+        android:layout_below="@+id/txt_place"
+        android:layout_marginTop="22dp" >
+		<ListView 
+		    android:id="@+id/list_result"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content" />
+    </ScrollView>
+
+</RelativeLayout>
