@@ -45,16 +45,9 @@
         android:layout_below="@+id/btn_add"
         android:text="Search" />
 
-    <ScrollView
-	    android:layout_width="fill_parent" 
+	<ListView 
+	    android:id="@+id/list_result"
+	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:layout_alignLeft="@+id/txt_place"
-        android:layout_below="@+id/txt_place"
-        android:layout_marginTop="22dp" >
-		<ListView 
-		    android:id="@+id/list_result"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content" />
-    </ScrollView>
-
+	    android:layout_below="@+id/txt_place" />
 </RelativeLayout>

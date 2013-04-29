@@ -18,7 +18,7 @@ public class PlaceDbAdapter {
     public static final String KEY_STN = "stn";
     public static final String KEY_GATE = "gate";
 	private static final String KEY_PLACE = "place";
-    private static final String TAG = "SubDbAdapter";
+    private static final String TAG = "ThatPlaceDbAdapter";
     private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
     private static final String DATABASE_CREATE =
@@ -85,16 +85,37 @@ public class PlaceDbAdapter {
                 KEY_GATE, KEY_PLACE }, null, null, null, null, null);
     }
    
-    public Cursor fetchPlace(long rowId) throws SQLException {
-   
+    public Cursor fetchPlaceByStn(String s) throws SQLException {
+    	Log.i(TAG, "/" + s + "/");
         Cursor mCursor = mDb.query(true, DATABASE_TABLE,
         		new String[] { KEY_ROWID, KEY_STN,	KEY_GATE, KEY_PLACE },
-        		KEY_ROWID + "=" + rowId, null, null, null, null,null);
+        		KEY_STN + "=" + s, null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
         return mCursor;
-   
+    }
+    
+    public Cursor fetchPlaceByPlace(String place) throws SQLException {
+    	
+    	Cursor mCursor = mDb.query(true, DATABASE_TABLE,
+    			new String[] { KEY_ROWID, KEY_STN,	KEY_GATE, KEY_PLACE },
+    			 KEY_PLACE + "=" + place, null, null, null, null,null);
+    	if (mCursor != null) {
+    		mCursor.moveToFirst();
+    	}
+    	return mCursor;
+    }
+    
+    public Cursor fetchPlaceByStnAndPlace(String stn, String place) throws SQLException {
+    	
+    	Cursor mCursor = mDb.query(true, DATABASE_TABLE,
+    			new String[] { KEY_ROWID, KEY_STN,	KEY_GATE, KEY_PLACE },
+    			KEY_STN + "=" + stn + " and " + KEY_PLACE + "=" + place, null, null, null, null,null);
+    	if (mCursor != null) {
+    		mCursor.moveToFirst();
+    	}
+    	return mCursor;
     }
    
     public boolean updatePlace(long rowId, String stn, String gate, String place) {
