@@ -63,6 +63,7 @@ public class PlaceDbAdapter {
     public void close() {
         mDbHelper.close();
     }
+    
    
     public long createPlace(String stn, String gate, String place) {
         ContentValues initialValues = new ContentValues();
@@ -85,11 +86,10 @@ public class PlaceDbAdapter {
                 KEY_GATE, KEY_PLACE }, null, null, null, null, null);
     }
    
-    public Cursor fetchPlaceByStn(String s) throws SQLException {
-    	Log.i(TAG, "/" + s + "/");
+    public Cursor fetchPlaceByStn(String stn) throws SQLException {
         Cursor mCursor = mDb.query(true, DATABASE_TABLE,
         		new String[] { KEY_ROWID, KEY_STN,	KEY_GATE, KEY_PLACE },
-        		KEY_STN + "=" + s, null, null, null, null, null);
+        		KEY_STN + "=" + "'" + stn + "'", null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
@@ -100,7 +100,7 @@ public class PlaceDbAdapter {
     	
     	Cursor mCursor = mDb.query(true, DATABASE_TABLE,
     			new String[] { KEY_ROWID, KEY_STN,	KEY_GATE, KEY_PLACE },
-    			 KEY_PLACE + "=" + place, null, null, null, null,null);
+    			 KEY_PLACE + "=" + "'" + place + "'", null, null, null, null,null);
     	if (mCursor != null) {
     		mCursor.moveToFirst();
     	}
@@ -111,7 +111,7 @@ public class PlaceDbAdapter {
     	
     	Cursor mCursor = mDb.query(true, DATABASE_TABLE,
     			new String[] { KEY_ROWID, KEY_STN,	KEY_GATE, KEY_PLACE },
-    			KEY_STN + "=" + stn + " and " + KEY_PLACE + "=" + place, null, null, null, null,null);
+    			KEY_STN + "=" + "'" + stn +  "'" +  " and " + KEY_PLACE + "=" + "'" + place + "'", null, null, null, null,null);
     	if (mCursor != null) {
     		mCursor.moveToFirst();
     	}
