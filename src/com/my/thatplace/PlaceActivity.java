@@ -88,6 +88,7 @@ public class PlaceActivity extends Activity {
 				mDbAdapter.createPlace(mStn, mGate, mPlace);
 				Toast.makeText(PlaceActivity.this, "추가완료 : " + mStn + " / " + mGate + " / " + mPlace, Toast.LENGTH_SHORT).show();
 				txt_place.setText("");
+				search();
 			}
 		});
 
@@ -98,49 +99,7 @@ public class PlaceActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				String db_stn = null;
-				String db_gate = null;
-				String db_place = null;
-				Cursor c = null;
-
-				if ( readCurrentEditText(Util.ONLY_PLACE) == Util.NG) { // input information is not enough then show all places
-					Log.d(TAG, "fetchAll");
-					c = mDbAdapter.fetchAllPlaces();
-				} else {
-					if (mStn.length() != 0 && mPlace.length() == 0) { // otherwise, show corresponding places
-						Log.d(TAG, "fetchPlaceByStn : " + mStn);
-						c = mDbAdapter.fetchPlaceByStn(mStn);
-					} else if (mStn.length() == 0 && mPlace.length() != 0) {
-						Log.d(TAG, "fetchPlaceByPlace : " + mPlace);
-						c = mDbAdapter.fetchPlaceByPlace(mPlace);
-					} else {
-						Log.d(TAG, "fetchPlaceByStnAndPlace : " + mStn + ", " + mPlace);
-						c = mDbAdapter.fetchPlaceByStnAndPlace(mStn, mPlace);
-					}
-				}
-				c.moveToFirst();
-				while(!c.isAfterLast()){
-					StringBuffer sb = new StringBuffer();
-					db_stn = c.getString(1);
-					db_gate = c.getString(2);
-					db_place = c.getString(3);
-					
-					sb.append(db_stn)
-					.append(" / ")
-					.append(db_gate)
-					.append(" / ")
-					.append(db_place);
-					Log.i(TAG, "Search result : " + sb.toString());
-					items.add(sb.toString());
-
-					c.moveToNext();
-				}
-				c.close();
-				
-				if (items.isEmpty()) {
-					items.add("No result");
-				}
-				adapter.notifyDataSetChanged();
+				search();
 			}
 	    });
 	    
@@ -258,8 +217,8 @@ public class PlaceActivity extends Activity {
 					// Text 전송할 때
 					Intent intent = new Intent(Intent.ACTION_SEND);
 					intent.setType("text/plain");
-					intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
-					intent.putExtra(Intent.EXTRA_TEXT, "Text");
+					intent.putExtra(Intent.EXTRA_SUBJECT, "[ThatPlace]");
+					intent.putExtra(Intent.EXTRA_TEXT, mCurItem);
 					intent.setPackage("com.kakao.talk");
 					startActivity(intent);
 				}
@@ -271,6 +230,52 @@ public class PlaceActivity extends Activity {
     		break;
     	}
     	return dlg;    	
+    }
+    
+    void search() {
+    	String db_stn = null;
+		String db_gate = null;
+		String db_place = null;
+		Cursor c = null;
+
+		if ( readCurrentEditText(Util.ONLY_PLACE) == Util.NG) { // input information is not enough then show all places
+			Log.d(TAG, "fetchAll");
+			c = mDbAdapter.fetchAllPlaces();
+		} else {
+			if (mStn.length() != 0 && mPlace.length() == 0) { // otherwise, show corresponding places
+				Log.d(TAG, "fetchPlaceByStn : " + mStn);
+				c = mDbAdapter.fetchPlaceByStn(mStn);
+			} else if (mStn.length() == 0 && mPlace.length() != 0) {
+				Log.d(TAG, "fetchPlaceByPlace : " + mPlace);
+				c = mDbAdapter.fetchPlaceByPlace(mPlace);
+			} else {
+				Log.d(TAG, "fetchPlaceByStnAndPlace : " + mStn + ", " + mPlace);
+				c = mDbAdapter.fetchPlaceByStnAndPlace(mStn, mPlace);
+			}
+		}
+		c.moveToFirst();
+		while(!c.isAfterLast()){
+			StringBuffer sb = new StringBuffer();
+			db_stn = c.getString(1);
+			db_gate = c.getString(2);
+			db_place = c.getString(3);
+			
+			sb.append(db_stn)
+			.append(" / ")
+			.append(db_gate)
+			.append(" / ")
+			.append(db_place);
+			Log.i(TAG, "Search result : " + sb.toString());
+			items.add(sb.toString());
+
+			c.moveToNext();
+		}
+		c.close();
+		
+		if (items.isEmpty()) {
+			items.add("No result");
+		}
+		adapter.notifyDataSetChanged();
     }
     
 }
