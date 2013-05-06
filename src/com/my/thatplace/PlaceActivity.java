@@ -6,14 +6,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -100,24 +98,25 @@ public class PlaceActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				if ( readCurrentEditText(Util.ONLY_PLACE) == Util.NG) {
-					return;
-				}
-				
 				String db_stn = null;
 				String db_gate = null;
 				String db_place = null;
 				Cursor c = null;
 
-				if (mStn.length() != 0 && mPlace.length() == 0) {
-					Log.d(TAG, "fetchPlaceByStn : " + mStn);
-					c = mDbAdapter.fetchPlaceByStn(mStn);
-				} else if (mStn.length() == 0 && mPlace.length() != 0) {
-					Log.d(TAG, "fetchPlaceByPlace : " + mPlace);
-					c = mDbAdapter.fetchPlaceByPlace(mPlace);
+				if ( readCurrentEditText(Util.ONLY_PLACE) == Util.NG) { // input information is not enough then show all places
+					Log.d(TAG, "fetchAll");
+					c = mDbAdapter.fetchAllPlaces();
 				} else {
-					Log.d(TAG, "fetchPlaceByStnAndPlace : " + mStn + ", " + mPlace);
-					c = mDbAdapter.fetchPlaceByStnAndPlace(mStn, mPlace);
+					if (mStn.length() != 0 && mPlace.length() == 0) { // otherwise, show corresponding places
+						Log.d(TAG, "fetchPlaceByStn : " + mStn);
+						c = mDbAdapter.fetchPlaceByStn(mStn);
+					} else if (mStn.length() == 0 && mPlace.length() != 0) {
+						Log.d(TAG, "fetchPlaceByPlace : " + mPlace);
+						c = mDbAdapter.fetchPlaceByPlace(mPlace);
+					} else {
+						Log.d(TAG, "fetchPlaceByStnAndPlace : " + mStn + ", " + mPlace);
+						c = mDbAdapter.fetchPlaceByStnAndPlace(mStn, mPlace);
+					}
 				}
 				c.moveToFirst();
 				while(!c.isAfterLast()){
@@ -209,8 +208,8 @@ public class PlaceActivity extends Activity {
     		.setIcon(R.drawable.ic_launcher)
     		.setTitle(mCurItem)
     		.setMessage("정말로 삭제할까요?")
+    		// 삭제버튼
     		.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
-
     			@Override
     			public void onClick(DialogInterface dialog, int which) {
     				// TODO Auto-generated method stub
@@ -243,14 +242,28 @@ public class PlaceActivity extends Activity {
     				c.close();
     			}
     		})
+    		// 취소 버튼
     		.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-
     			@Override
     			public void onClick(DialogInterface dialog, int which) {
     				// TODO Auto-generated method stub
     				Log.i(TAG, "Dialog. Clicked 취소");
     			}
-    		})		
+    		})
+    		// 카카오 공유
+    		.setNeutralButton("공유", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// TODO Auto-generated method stub
+					// Text 전송할 때
+					Intent intent = new Intent(Intent.ACTION_SEND);
+					intent.setType("text/plain");
+					intent.putExtra(Intent.EXTRA_SUBJECT, "Subject");
+					intent.putExtra(Intent.EXTRA_TEXT, "Text");
+					intent.setPackage("com.kakao.talk");
+					startActivity(intent);
+				}
+			})
     		.create();
     		break;
 
