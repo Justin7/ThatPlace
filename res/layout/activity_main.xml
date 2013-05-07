@@ -27,7 +27,8 @@
         android:layout_height="fill_parent"
         android:layout_alignBottom="@+id/btn_search"
         android:layout_alignLeft="@+id/txt_stn"
-        android:layout_alignTop="@+id/btn_search" />
+        android:layout_alignTop="@+id/btn_search"
+        android:hint="장소를 입력하세요" />
 
     <Button
         android:id="@+id/btn_add"
