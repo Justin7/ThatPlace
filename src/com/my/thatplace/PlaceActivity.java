@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -42,6 +44,9 @@ public class PlaceActivity extends Activity {
 	
 	// DB
 	public PlaceDbAdapter mDbAdapter;
+	
+	// Etc
+	InputMethodManager imm;
 
     public PlaceActivity() {
 		super();
@@ -53,7 +58,7 @@ public class PlaceActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-		
+		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		 // Initialize widgets
 		txt_stn = (AutoCompleteTextView)findViewById(R.id.txt_stn);
 		spn_gateNum = (Spinner)findViewById(R.id.spn_gateNum);
@@ -89,6 +94,7 @@ public class PlaceActivity extends Activity {
 				Toast.makeText(PlaceActivity.this, "추가완료 : " + mStn + " / " + mGate + " / " + mPlace, Toast.LENGTH_SHORT).show();
 				txt_place.setText("");
 				search();
+				imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 			}
 		});
 
@@ -100,6 +106,7 @@ public class PlaceActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				search();
+				imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 			}
 	    });
 	    
