@@ -174,7 +174,7 @@ public class PlaceActivity extends Activity {
     	switch(id) {
     	case DLG_DEL_ITEM :
     		dlg = new AlertDialog.Builder(this)
-    		.setIcon(R.drawable.ic_launcher)
+    		.setIcon(R.drawable.ic_question)
     		.setTitle(mCurItem)
     		.setMessage("정말로 삭제할까요?")
     		// 삭제버튼
