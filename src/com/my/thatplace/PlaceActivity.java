@@ -118,11 +118,15 @@ public class PlaceActivity extends Activity {
 					long id) {
 				// TODO Auto-generated method stub
 				mCurItem = items.get(pos);
-				if ("No result".equals(mCurItem)) {
+				Log.d(TAG, "onItemClick : " + mCurItem);
+				if ("No result".equals(mCurItem) || "[Total Result]".equals(mCurItem)) {
 					return;
 				}
 				mPos = pos;
+				Log.d(TAG, "before showDialog : " + mCurItem);
+				removeDialog(DLG_DEL_ITEM);
 				showDialog(DLG_DEL_ITEM);
+				
 			}
 		});
 	    
@@ -173,6 +177,7 @@ public class PlaceActivity extends Activity {
 
     	switch(id) {
     	case DLG_DEL_ITEM :
+    		Log.d(TAG, "onCreateDialog : " + mCurItem);
     		dlg = new AlertDialog.Builder(this)
     		.setIcon(R.drawable.ic_question)
     		.setTitle(mCurItem)
@@ -196,8 +201,6 @@ public class PlaceActivity extends Activity {
     				Log.i(TAG, "Extracted Tokens : " + tokens[0] + ", " + tokens[1] + ", " + tokens[2]);
     				c = mDbAdapter.fetchPlaceByStnAndPlace(tokens[0],tokens[2]);	
     				c.moveToFirst();
-    				
-    				// TODO : No result 등 클릭 시 죽는 예외처리
     				
     				col_id = c.getLong(c.getColumnIndex("_id"));
     				if (col_id >= 0) {
@@ -251,6 +254,7 @@ public class PlaceActivity extends Activity {
 		if ( readCurrentEditText(Util.ONLY_PLACE) == Util.NG) { // input information is not enough then show all places
 			Log.d(TAG, "fetchAll");
 			c = mDbAdapter.fetchAllPlaces();
+			//items.add("[Total Result]");
 		} else {
 			if (mStn.length() != 0 && mPlace.length() == 0) { // otherwise, show corresponding places
 				Log.d(TAG, "fetchPlaceByStn : " + mStn);
